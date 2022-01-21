@@ -1,14 +1,111 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        {% if title %}
-        <title> {{ title }}</title>
-        {% else %}
-        <title> Welcome to the best Movie Review website </title>
-        {% endif %}
-    </head>
-    <body>
+{% extends 'base.html'%}
+{% import 'macros.html' as macro %}
 
-    </body>
-</html>
+{% block styles%}
+{{ super() }}
+<link rel="stylesheet" href="{{url_for('static',filename='css/index.css')}}">
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <h1 class="text-center"> Welcome To My One Minute Pitch</h1>
+    <div class="row">
+        {% for post in posts %}
+        <div class="col-md-12">
+            <div class="panel panel-default ">
+                <div class="panel-heading text-center">
+                    <h5>Title : {{ post.title }}</h5>
+                </div>
+                <div class="panel-body text-start">
+                    <h5>Category : {{ post.category }}</h5>
+                    <h5>Content : {{ post.content }}</h5>
+                    <p>Posted on : {{post.date_posted.strftime('%Y-%m-%d')}}</p>
+                    <p>Posted by : {{post.user.username}}</p>
+                </div>
+                <div class="panel-footer">
+                    <a href="{{ url_for('main.post_details', id = post.id)}}"><button class="btn-success">Add a
+                            comment</button></a>
+
+
+                    <div class="col-md-4 upvote">
+                        <span class="foot"> <a href="{{url_for('main.like',id = post.id)}}"><button class="btn-success">Upvotes:{{post.upvote.count()}}</button></a></span>
+                    </div>
+                    <div class="col-md-4 downvote">
+                        <span class="foot"> <a href="{{url_for('main.dislike',id = post.id)}}"> <button class="btn-danger">Downvotes:{{post.downvote.count()}}</button></a></span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div><br>
+<div class="container-fluid" style="background-color: hotpink">
+    <footer class="text-center text-white">
+      <div class="container-fluid">
+        <section class="mt-5">
+          <div class="row text-center d-flex justify-content-center pt-5">
+            <div class="col-md-2">
+              <h6 class="text-uppercase font-weight-bold">
+                <a href="/" class="text-white">Home</a>
+              </h6>
+            </div>
+            <div class="col-md-2">
+              <h6 class="text-uppercase font-weight-bold">
+                <a href="/post" class="text-white">Add a Pitch</a>
+              </h6>
+            </div>
+            
+            <div class="col-md-2">
+              <h6 class="text-uppercase font-weight-bold">
+                <a href="{{url_for('main.profile',uname=current_user.username)}}" class="text-white">{{current_user.username}}</a>
+              </h6>
+            </div>
+           
+            <div class="col-md-2">
+              <h6 class="text-uppercase font-weight-bold">
+                <a href="{{url_for('auth.logout')}}" class="text-white">Logout</a>
+              </h6>
+            </div>
+            
+            <div class="col-md-2">
+              <h6 class="text-uppercase font-weight-bold">
+                <a href="{{url_for('auth.login')}}" class="text-white">Login</a>
+              </h6>
+            </div>
+            
+          </div>
+          
+        </section>
+        
+  
+        <hr class="my-3" />
+  
+        
+        <section class="mb-5">
+          <div class="row d-flex justify-content-center">
+            <div class="col-lg-8">
+              <p>
+                
+              </p>
+            </div>
+          </div>
+        </section>
+        
+      </div><br>
+     
+      <div
+           class=""
+           style="background-color: hotpink"
+           >
+        © 2021 Copyright:
+        <a class="text-white" href="/">oneminutepitch.com</a>
+      </div> <br>
+      
+    </footer>
+    
+  </div> <br>
+
+    {% endblock%}
